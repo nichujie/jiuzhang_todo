@@ -1,17 +1,31 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import {ListGroup, Container} from "react-bootstrap";
+import TodoItem from "./TodoItem";
+import './List.css'
 
 class List extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      todoList: [1, 2, 3]
+      todoList: []
     };
-    this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick(e) {
-    e.preventDefault();
+  render() {
+    return (
+      <Container>
+        <h1>Todo List</h1>
+        {
+          this.state.todoList.map((item) =>
+            <TodoItem item={item} key={item.id}/>
+          )
+        }
+      </Container>
+    );
+  }
+
+  componentDidMount() {
     axios({
       method: 'GET',
       url: 'http://127.0.0.1:8000/todo/',
@@ -21,16 +35,6 @@ class List extends Component {
         todoList: response.data
       })
     });
-  };
-
-  render() {
-    return (
-      <div>
-        <h1>List</h1>
-        <button onClick={(e) => this.handleClick(e)}>233</button>
-        <h2>{this.state.todoList}</h2>
-      </div>
-    );
   }
 }
 
