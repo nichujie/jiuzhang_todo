@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import {Tabs, Container, Tab, Button, Form} from "react-bootstrap";
+import {Tabs, Container, Tab, Form} from "react-bootstrap";
 import TodoItem from "./TodoItem";
 import './List.css'
 
@@ -52,13 +52,12 @@ class List extends Component {
   render() {
     return (
       <Container>
-        <h1>Todo List</h1>
+        <h1 className="todo-title">Todo List</h1>
         <Form onSubmit={(e) => this.createItem(e)}>
           <Form.Group controlId="form.title">
             <Form.Control value={this.state.title} onChange={this.onTitleChange}
-                          placeholder="type down things and press Enter to create items quickly"/>
+                          placeholder="type down things and press Enter to create items quickly..." size="lg"/>
           </Form.Group>
-
         </Form>
         <Tabs defaultActiveKey="undone"
               onSelect={this.getTodoList}>

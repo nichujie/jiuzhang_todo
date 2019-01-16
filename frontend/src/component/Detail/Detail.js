@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Form, Button, Container} from "react-bootstrap";
 import axios from "axios";
-import {Redirect} from "react-router-dom";
 
 class Detail extends Component {
   constructor(props) {

@@ -1,3 +1,8 @@
+.todo-title {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
 .todo-container {
     height: 150px;
     padding: 10px;
