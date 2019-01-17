@@ -32,7 +32,7 @@ See [Demo](http://119.23.49.42/).
 
 ### 列出所有待办事项
 
-![avatar](https://github.com/nichujie/jiuzhang_todo/tree/master/screenshot/list.gif)
+![avatar](https://github.com/nichujie/jiuzhang_todo/tree/master/screenshot/list.png)
 
 ### *待办事项设置优先级
 
