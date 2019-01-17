@@ -23,7 +23,6 @@ class Detail extends Component {
       method: 'PUT',
       url: 'http://127.0.0.1:8000/todo/' + String(this.state.id),
       data: {
-        id: this.state.id,
         title: this.state.title,
         content: this.state.content,
         status: this.state.status,
@@ -40,12 +39,10 @@ class Detail extends Component {
 
   onTitleChange = (e) => {
     this.setState({title: e.target.value});
-    console.log(this.state);
   };
 
   onContentChange = (e) => {
     this.setState({content: e.target.value});
-    console.log(this.state);
   };
 
   onPriorityChange = (e) => {

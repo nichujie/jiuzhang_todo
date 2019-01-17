@@ -28,21 +28,38 @@ class TodoItem extends Component {
     });
   };
 
+  raisePriority = () => {
+    const id = this.props.item.id;
+    const priority = this.props.item.priority;
+    if (priority >= 3) return false;
+    else {
+      axios({
+        method: 'PUT',
+        url: 'http://127.0.0.1:8000/todo/' + String(id),
+        data: {
+          priority: priority + 1
+        }
+      }).then((response) => {
+        this.props.refresh();
+      });
+    }
+  };
+
   render() {
-    const statusColor = ['#cce5ff', '#d4edda', '#f8d7da', '#fff3cd'];
+    const statusColor = ['#cce5ff', '#d4edda', '#fff3cd', '#f8d7da'];
     const mstyle = {
       borderLeftColor: statusColor[this.props.item.priority]
     };
     let settings = null;
-    if(this.props.item.status === 0) {
+    if (this.props.item.status === 0) {
       settings = <Dropdown as={ButtonGroup} drop="right">
         <Button variant="primary" onClick={this.markAsDone}>Mark As Done</Button>
 
         <Dropdown.Toggle split variant="primary" id="dropdown-split-basic"/>
 
         <Dropdown.Menu>
-          <Dropdown.Item hred="#/action-1">Delete</Dropdown.Item>
-          <Dropdown.Item hred="#/action-2">Raise Priority</Dropdown.Item>
+          <Dropdown.Item onClick={this.deleteItem}>Delete</Dropdown.Item>
+          <Dropdown.Item onClick={this.raisePriority}>Raise Priority</Dropdown.Item>
           <Dropdown.Item hred="#/action-3">Something else</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>

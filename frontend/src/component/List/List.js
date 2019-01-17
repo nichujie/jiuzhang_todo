@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import {Tabs, Container, Tab, Form} from "react-bootstrap";
+import {Tabs, Container, Tab, Form, Button, Row, Col} from "react-bootstrap";
 import TodoItem from "./TodoItem";
 import './List.css'
 
@@ -9,7 +9,9 @@ class List extends Component {
     super(props);
     this.state = {
       title: '',
-      todoList: []
+      undone: [],
+      done: [],
+      isSortedByPriority: false
     };
   }
 
@@ -23,8 +25,19 @@ class List extends Component {
       method: 'GET',
       url: 'http://127.0.0.1:8000/todo/',
     }).then((response) => {
+      let done = [];
+      let undone = [];
+      for (let item of response.data) {
+        if (item.status === 1) {
+          done.unshift(item);
+        } else {
+          undone.unshift(item);
+        }
+      }
+
       this.setState({
-        todoList: response.data
+        done: done,
+        undone: undone
       })
     });
   };
@@ -39,13 +52,26 @@ class List extends Component {
       }
     }).then((response) => {
       this.setState((prevState, props) => {
-        let todos = prevState.todoList;
-        todos.unshift(response.data);
+        let undone = prevState.undone;
+        undone.unshift(response.data);
         return {
-          todoList: todos,
+          undone: undone,
           title: ''
         }
       });
+    });
+  };
+
+  sortByPriority = (e) => {
+    this.setState((prevState, props) => {
+      let undone = prevState.undone;
+      undone.sort((a, b) => {
+        return b.priority - a.priority;
+      });
+      return {
+        isSortedByPriority: true,
+        undone: undone
+      }
     });
   };
 
@@ -62,30 +88,37 @@ class List extends Component {
         <Tabs defaultActiveKey="undone"
               onSelect={this.getTodoList}>
           <Tab eventKey="undone" title="Undone">
-            {
-              this.state.todoList.map((item) => {
-                  if (item.status === 0)
-                    return <TodoItem item={item} key={item.id} refresh={() => {
-                      this.getTodoList()
-                    }}/>;
-                  else
-                    return null;
-                }
-              )
-            }
+            <Container>
+              <Row className="sort-button">
+                <Button onClick={this.sortByPriority}>Sort By Priority</Button>
+              </Row>
+              {
+                this.state.undone.map((item) => {
+                    if (item.status === 0)
+                      return <TodoItem item={item} key={item.id} refresh={() => {
+                        this.getTodoList()
+                      }}/>;
+                    else
+                      return null;
+                  }
+                )
+              }
+            </Container>
           </Tab>
           <Tab eventKey="done" title="Done">
-            {
-              this.state.todoList.map((item) => {
-                  if (item.status === 1)
-                    return <TodoItem item={item} key={item.id} refresh={() => {
-                      this.getTodoList()
-                    }}/>;
-                  else
-                    return null;
-                }
-              )
-            }
+            <Container>
+              {
+                this.state.done.map((item) => {
+                    if (item.status === 1)
+                      return <TodoItem item={item} key={item.id} refresh={() => {
+                        this.getTodoList()
+                      }}/>;
+                    else
+                      return null;
+                  }
+                )
+              }
+            </Container>
           </Tab>
         </Tabs>
 
