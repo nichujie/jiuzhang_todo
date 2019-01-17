@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import {ButtonGroup, Button, Dropdown, Container, Row, Col} from "react-bootstrap";
 import {Link} from "react-router-dom";
+import api from '../../api';
 
 class TodoItem extends Component {
 
@@ -9,7 +10,7 @@ class TodoItem extends Component {
     const id = this.props.item.id;
     axios({
       method: 'PUT',
-      url: 'http://127.0.0.1:8000/todo/' + String(id),
+      url: api + 'todo/' + String(id),
       data: {
         status: 1
       }
@@ -22,7 +23,7 @@ class TodoItem extends Component {
     const id = this.props.item.id;
     axios({
       method: 'DELETE',
-      url: 'http://127.0.0.1:8000/todo/' + String(id),
+      url: api + 'todo/' + String(id),
     }).then((response) => {
       this.props.refresh();
     });
@@ -35,7 +36,7 @@ class TodoItem extends Component {
     else {
       axios({
         method: 'PUT',
-        url: 'http://127.0.0.1:8000/todo/' + String(id),
+        url: api + 'todo/' + String(id),
         data: {
           priority: priority + 1
         }
@@ -60,7 +61,6 @@ class TodoItem extends Component {
         <Dropdown.Menu>
           <Dropdown.Item onClick={this.deleteItem}>Delete</Dropdown.Item>
           <Dropdown.Item onClick={this.raisePriority}>Raise Priority</Dropdown.Item>
-          <Dropdown.Item hred="#/action-3">Something else</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
     } else {

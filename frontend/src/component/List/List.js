@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import {Tabs, Container, Tab, Form, Button, Row, Col} from "react-bootstrap";
+import {Tabs, Container, Tab, Form, Button, Row} from "react-bootstrap";
 import TodoItem from "./TodoItem";
 import './List.css'
+import api from '../../api';
 
 class List extends Component {
   constructor(props) {
@@ -23,7 +24,7 @@ class List extends Component {
   getTodoList = () => {
     axios({
       method: 'GET',
-      url: 'http://127.0.0.1:8000/todo/',
+      url: api + 'todo/',
     }).then((response) => {
       let done = [];
       let undone = [];
@@ -46,7 +47,7 @@ class List extends Component {
     e.preventDefault();
     axios({
       method: 'POST',
-      url: 'http://127.0.0.1:8000/todo/',
+      url: api + 'todo/',
       data: {
         title: this.state.title
       }
