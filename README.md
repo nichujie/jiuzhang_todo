@@ -10,7 +10,7 @@ See [Demo](http://119.23.49.42/).
 
 在顶部输入待办事项后按下回车，快速创建事项。
 
-![avatar](https://github.com/nichujie/jiuzhang_todo/tree/master/screenshot/create.gif)
+![](https://github.com/nichujie/jiuzhang_todo/blob/master/screenshot/create.gif)
 
 ### 删除一个待办事项
 
