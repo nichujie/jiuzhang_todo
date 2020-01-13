@@ -1,6 +1,7 @@
+from django.utils import timezone
 from rest_framework import serializers
-from .models import Todo
 
+from .models import Todo
 
 class TodoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -8,7 +9,6 @@ class TodoSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'content', 'status', 'priority', 'created_at', 'expire_date')
 
     def validate_expire_date(self, value):
-        print('Checking expiring date!')
-        if False:
-            raise serializers.ValidationError("")
+        if value < timezone.now():
+            raise serializers.ValidationError("Expire time must be greater than created time!")
         return value

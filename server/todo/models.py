@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils import timezone
 from .constants import TODO_STATUS_CHOICES, TODO_PRIORITY_CHOICES, TodoStatus, TodoPriority
 
 

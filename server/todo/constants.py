@@ -1,7 +1,6 @@
 class TodoStatus(object):
     UNDONE = 0
     DONE = 1
-    EXPIRED = 2
 
 
 class TodoPriority(object):
@@ -14,7 +13,6 @@ class TodoPriority(object):
 TODO_STATUS_CHOICES = (
     (TodoStatus.UNDONE, '未完成'),
     (TodoStatus.DONE, '完成'),
-    (TodoStatus.EXPIRED, '过期'),
 )
 
 TODO_PRIORITY_CHOICES = (
