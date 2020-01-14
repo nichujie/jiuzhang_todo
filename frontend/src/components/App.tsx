@@ -2,25 +2,25 @@ import React from 'react';
 import 'antd/dist/antd.css';
 
 import {Button} from 'antd';
-import axios from 'axios'
+import provider from '../utils/provider';
+
 
 const App: React.FC = () => {
   return (
     <div>
       <Button type="primary"
               onClick={() => {
-                axios.create({
-                  withCredentials: true
-                }).get('http://127.0.0.1:8000/api/todos/')
-                  .then((response) => {
-                    console.log(response);
-                  })
+                provider.getInstance().get('/api/todos/').then(
+                  (response) => {
+                    console.log(response.data);
+                  }
+                )
               }}
-                >
-                Primary
-                </Button>
-                </div>
-                );
-              };
+      >
+        Primary
+      </Button>
+    </div>
+  );
+};
 
-      export default App;
+export default App;
