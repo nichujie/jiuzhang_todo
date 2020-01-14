@@ -1,9 +1,9 @@
 export interface ITodoItem {
-  id: number;
+  id?: number;
   title: string;
   content: string;
   status: number;
   priority: number,
-  created_at: string,
+  created_at?: string,
   expire_date: string
 }

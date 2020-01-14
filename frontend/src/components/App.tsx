@@ -2,7 +2,7 @@ import React from 'react';
 import 'antd/dist/antd.css';
 
 import {Button} from 'antd';
-import provider from '../utils/provider';
+import TodoStore from '../store/TodoStore';
 
 
 const App: React.FC = () => {
@@ -10,14 +10,17 @@ const App: React.FC = () => {
     <div>
       <Button type="primary"
               onClick={() => {
-                provider.getInstance().get('/api/todos/').then(
-                  (response) => {
-                    console.log(response.data);
-                  }
-                )
+                TodoStore.fetchTodoList();
               }}
       >
         Primary
+      </Button>
+      <Button type="primary"
+              onClick={() => {
+                console.log(TodoStore.expiredTodoList);
+              }}
+      >
+        Expire
       </Button>
     </div>
   );
