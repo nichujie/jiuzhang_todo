@@ -1,0 +1,19 @@
+.app-page {
+    min-height: 100vh;
+}
+
+.app-header {
+    background: #fff;
+    padding-left: 30px;
+    font-size: 1.2rem;
+}
+
+.app-container {
+    margin: 30px 16px;
+}
+
+.app-content {
+    padding: 20px 30px;
+    background: #fff;
+    min-height: 100%;
+}

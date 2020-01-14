@@ -2,10 +2,11 @@ import {action, computed, observable} from 'mobx';
 import provider from '../utils/provider';
 
 import {ITodoItem} from '../constant/Interface';
-import {TodoStatus, TodoPriority} from '../constant/params';
+import {TodoStatus} from '../constant/params';
 
 class TodoStore {
   @observable todoList: ITodoItem[] = [];
+  @observable showType: string = 'undone';
 
   @computed get undoneTodoList(): ITodoItem[] {
     return this.todoList.filter((todo) => {
@@ -25,6 +26,13 @@ class TodoStore {
       const expire_date = new Date(Date.parse(todo.expire_date));
       return expire_date < now;
     });
+  }
+
+  @computed get showTodoList(): ITodoItem[] {
+    if (this.showType === 'undone') return this.undoneTodoList;
+    if (this.showType === 'done') return this.doneTodoList;
+    if (this.showType === 'expired') return this.expiredTodoList;
+    return this.todoList;
   }
 
   @action fetchTodoList = (): Promise<any> => {
@@ -80,6 +88,7 @@ class TodoStore {
         this.fetchTodoList();
       })
   };
+
 }
 
 const todoStore = new TodoStore();

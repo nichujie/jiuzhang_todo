@@ -8,5 +8,5 @@ from .serializers import TodoSerializer
 # Create your views here.
 
 class TodoViewSet(viewsets.ModelViewSet):
-    queryset = Todo.objects.all().order_by("created_at")
+    queryset = Todo.objects.all().order_by("expire_date").order_by("-priority")
     serializer_class = TodoSerializer
