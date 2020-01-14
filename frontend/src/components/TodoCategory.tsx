@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Icon, Menu} from "antd";
 
-import TodoStore from '../../store/TodoStore';
+import TodoStore from '../store/TodoStore';
 
 interface IMenuClick {
   key: string

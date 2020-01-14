@@ -3,7 +3,7 @@ import {Layout} from 'antd';
 
 import TodoStore from '../store/TodoStore';
 import TodoList from "./TodoList";
-import TodoCategory from "./TodoList/TodoCategory";
+import TodoCategory from "./TodoCategory";
 import './App.css';
 
 const {Header, Content, Sider} = Layout;

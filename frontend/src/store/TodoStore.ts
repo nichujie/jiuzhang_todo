@@ -4,13 +4,20 @@ import provider from '../utils/provider';
 import {ITodoItem} from '../constant/Interface';
 import {TodoStatus} from '../constant/params';
 
+const checkExpired = (todo: ITodoItem): boolean => {
+  const now = new Date();
+  const expire_date = new Date(Date.parse(todo.expire_date));
+  return expire_date < now;
+};
+
 class TodoStore {
   @observable todoList: ITodoItem[] = [];
   @observable showType: string = 'undone';
 
   @computed get undoneTodoList(): ITodoItem[] {
     return this.todoList.filter((todo) => {
-      return todo.status === TodoStatus.UNDONE;
+      return (todo.status === TodoStatus.UNDONE) &&
+        !checkExpired(todo);
     });
   }
 
@@ -22,9 +29,8 @@ class TodoStore {
 
   @computed get expiredTodoList(): ITodoItem[] {
     return this.todoList.filter((todo) => {
-      const now = new Date();
-      const expire_date = new Date(Date.parse(todo.expire_date));
-      return expire_date < now;
+      return (todo.status === TodoStatus.UNDONE) &&
+        checkExpired(todo);
     });
   }
 
@@ -56,18 +62,6 @@ class TodoStore {
     })
   };
 
-  @action raisePriority = (todo: ITodoItem) => {
-    const newTodo: ITodoItem = Object.assign({}, todo);
-    newTodo.priority -= 1;
-    this.updateTodoItem(newTodo);
-  };
-
-  @action reducePriority = (todo: ITodoItem) => {
-    const newTodo: ITodoItem = Object.assign({}, todo);
-    newTodo.priority += 1;
-    this.updateTodoItem(newTodo);
-  };
-
   @action createTodoItem = (todo: ITodoItem) => {
     return provider.getInstance().post('/todos/', todo)
       .then((response) => {
@@ -76,14 +70,38 @@ class TodoStore {
   };
 
   @action updateTodoItem = (todo: ITodoItem) => {
-    return provider.getInstance().put(`/todos/${todo.id}`, todo)
+    return provider.getInstance().put(`/todos/${todo.id}/`, todo)
       .then((response) => {
         this.fetchTodoList();
       })
   };
 
   @action deleteTodoItem = (todo: ITodoItem) => {
-    return provider.getInstance().delete(`/todos/${todo.id}`)
+    return provider.getInstance().delete(`/todos/${todo.id}/`)
+      .then((response) => {
+        this.fetchTodoList();
+      })
+  };
+
+  @action markAsDone = (todo: ITodoItem) => {
+    return provider.getInstance().patch(`/todos/${todo.id}/`,
+      {status: TodoStatus.DONE})
+      .then((response) => {
+        this.fetchTodoList();
+      })
+  };
+
+  @action raisePriority = (todo: ITodoItem) => {
+    return provider.getInstance().patch(`/todos/${todo.id}/`,
+      {priority: todo.priority - 1})
+      .then((response) => {
+        this.fetchTodoList();
+      })
+  };
+
+  @action reducePriority = (todo: ITodoItem) => {
+    return provider.getInstance().patch(`/todos/${todo.id}/`,
+      {priority: todo.priority + 1})
       .then((response) => {
         this.fetchTodoList();
       })
