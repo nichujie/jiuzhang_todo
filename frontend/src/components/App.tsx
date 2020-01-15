@@ -14,12 +14,11 @@ import './App.css';
 const {Header, Content, Sider} = Layout;
 
 @observer
-class TodoApp extends Component<any, any> {
+class TodoApp extends Component<any, { sortBy: string }> {
   constructor(props: any) {
     super(props);
     this.state = {
       sortBy: 'expire',
-      todo: null
     }
   }
 
@@ -34,7 +33,6 @@ class TodoApp extends Component<any, any> {
   };
 
   render() {
-    const {sortBy} = this.state;
     return (
       <Layout className="app-page">
         <Sider>
@@ -51,7 +49,7 @@ class TodoApp extends Component<any, any> {
             <div className="app-content">
               <Row>
                 <div className="sort-button-group">
-                  <Radio.Group value={sortBy} onChange={this.handleSortChange}>
+                  <Radio.Group value={this.state.sortBy} onChange={this.handleSortChange}>
                     <Radio.Button value="expire">按日期排序</Radio.Button>
                     <Radio.Button value="priority">按优先级排序</Radio.Button>
                   </Radio.Group>

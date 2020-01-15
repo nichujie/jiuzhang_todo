@@ -1,28 +1,37 @@
 import moment from 'moment';
 import {observer} from "mobx-react";
 import React, {Component, FormEvent} from "react";
+import {FormComponentProps} from "antd/es/form";
 import {Form, Button, Col, Row, Input, Select, DatePicker} from 'antd';
 
 import TodoStore from '../../store/TodoStore';
 import {TodoPriority} from "../../constant/params";
+import {ITodoItem} from "../../constant/Interface";
 
 import './TodoDetail.css';
 
-
 const {Option} = Select;
 const {TextArea} = Input;
+
+interface TodoDetailProps extends FormComponentProps {
+  title: string,
+  content: string,
+  status: number,
+  priority: number,
+  expire_date: object
+}
 
 function hasErrors(fieldsError: any) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
 
-function disabledDate(current: any) {
+function disabledDate(current: any): boolean {
   return current && current < moment().endOf('day');
 }
 
 
 @observer
-class TodoDetailForm extends Component<any, any> {
+class TodoDetailForm extends Component<TodoDetailProps, any> {
   componentDidMount() {
     const {form} = this.props;
     const todo = TodoStore.editingTodo;
@@ -43,9 +52,9 @@ class TodoDetailForm extends Component<any, any> {
     });
   }
 
-  handleSubmit = (e: FormEvent) => {
+  handleSubmit = (e: FormEvent): void => {
     e.preventDefault();
-    this.props.form.validateFields((err: any, values: any) => {
+    this.props.form.validateFields((err: object, values: ITodoItem) => {
       if (!err) {
         TodoStore.updateEditingTodoItem(values);
       }

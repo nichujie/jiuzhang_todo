@@ -5,6 +5,7 @@ import provider from '../utils/provider';
 
 import {ITodoItem} from '../constant/Interface';
 import {TodoPriority, TodoStatus} from '../constant/params';
+import {AxiosError, AxiosResponse} from "axios";
 
 const checkExpired = (todo: ITodoItem): boolean => {
   const now = new Date();
@@ -47,7 +48,7 @@ class TodoStore {
 
   @action fetchTodoList = (): void => {
     provider.getInstance().get('/todos/')
-      .then((response) => {
+      .then((response: AxiosResponse) => {
         this.todoList = response.data;
       })
       .catch(() => {
@@ -71,7 +72,7 @@ class TodoStore {
 
   @action updateEditingTodoItem = (todo: object) => {
     return provider.getInstance().patch(`/todos/${this.editingTodo?.id}/`, todo)
-      .then((response) => {
+      .then(() => {
         this.closeDetailModal();
         this.fetchTodoList();
         message.success('更新事项成功！');
@@ -83,7 +84,7 @@ class TodoStore {
 
   @action deleteTodoItem = (todo: ITodoItem) => {
     return provider.getInstance().delete(`/todos/${todo.id}/`)
-      .then((response) => {
+      .then(() => {
         this.fetchTodoList();
         message.success('删除事项成功！');
       })
@@ -95,7 +96,7 @@ class TodoStore {
   @action markAsDone = (todo: ITodoItem) => {
     return provider.getInstance().patch(`/todos/${todo.id}/`,
       {status: TodoStatus.DONE})
-      .then((response) => {
+      .then(() => {
         this.fetchTodoList();
         message.success('完成事项！');
       })
@@ -107,7 +108,7 @@ class TodoStore {
   @action raisePriority = (todo: ITodoItem): void => {
     provider.getInstance().patch(`/todos/${todo.id}/`,
       {priority: todo.priority - 1})
-      .then((response) => {
+      .then(() => {
         this.fetchTodoList();
       })
       .catch(() => {
@@ -118,7 +119,7 @@ class TodoStore {
   @action reducePriority = (todo: ITodoItem): void => {
     provider.getInstance().patch(`/todos/${todo.id}/`,
       {priority: todo.priority + 1})
-      .then((response) => {
+      .then(() => {
         this.fetchTodoList();
       })
       .catch(() => {
@@ -137,7 +138,7 @@ class TodoStore {
       expire_date: nextDay.toISOString()
     };
     provider.getInstance().post('/todos/', todo)
-      .then((response) => {
+      .then(() => {
         this.fetchTodoList();
         message.success('创建事项成功！');
       })

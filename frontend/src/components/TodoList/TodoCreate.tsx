@@ -1,20 +1,25 @@
 import React, {Component, FormEvent} from "react";
 import {Form, Input, Button} from 'antd';
+import {FormComponentProps} from 'antd/es/form';
 
 import TodoStore from '../../store/TodoStore';
+
+interface TodoCreateProps extends FormComponentProps {
+  title: string
+}
 
 function hasErrors(fieldsError: any) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
 
-class TodoCreate extends Component<any, any> {
+class TodoCreate extends Component<TodoCreateProps, any> {
   componentDidMount(): void {
     this.props.form.validateFields();
   }
 
   handleSubmit = (e: FormEvent): void => {
     e.preventDefault();
-    this.props.form.validateFields((err: any, values: any) => {
+    this.props.form.validateFields((err: object, values: { title: string }) => {
       if (!err) {
         TodoStore.quickCreateTodo(values.title);
         this.props.form.resetFields();

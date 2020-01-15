@@ -10,7 +10,7 @@ import TodoDetailForm from "./TodoDetailForm";
 class TodoDetailDrawer extends Component<any, any> {
   render() {
     return (
-      <div>
+      <>
         <Drawer
           title="修改任务信息"
           width={500}
@@ -21,7 +21,7 @@ class TodoDetailDrawer extends Component<any, any> {
         >
           <TodoDetailForm/>
         </Drawer>
-      </div>
+      </>
     );
   }
 }
