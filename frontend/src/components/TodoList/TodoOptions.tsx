@@ -15,7 +15,7 @@ class TodoOptions extends Component<OptionProps, any> {
     return (
       <Menu>
         <Menu.Item key="edit" onClick={() => {
-          console.log("click")
+          TodoStore.showDetailModal(todo);
         }}>
           编辑
         </Menu.Item>

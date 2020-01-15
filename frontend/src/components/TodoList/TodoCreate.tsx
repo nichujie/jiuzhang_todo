@@ -16,20 +16,12 @@ class TodoCreate extends Component<any, any> {
     e.preventDefault();
     this.props.form.validateFields((err: any, values: any) => {
       if (!err) {
-        TodoStore.quickCreateTodo(values.title)
-          .then(() => {
-            this.handleReset();
-          })
-          .catch(() => {
-
-          })
+        TodoStore.quickCreateTodo(values.title);
+        this.props.form.resetFields();
       }
     });
   };
 
-  handleReset = () => {
-    this.props.form.resetFields();
-  };
 
   render() {
     const {getFieldDecorator, getFieldsError, getFieldError, isFieldTouched} = this.props.form;
