@@ -9,11 +9,22 @@
 }
 
 .app-container {
-    margin: 30px 16px;
+    margin: 10px 16px;
+}
+
+.app-create-content {
+    margin: 20px 0;
+    padding: 16px 30px;
+    background: #fff;
 }
 
 .app-content {
+    margin: 20px 0;
     padding: 20px 30px;
     background: #fff;
-    min-height: 100%;
+    min-height: 90%;
+}
+
+.sort-button-group {
+    float: right;
 }

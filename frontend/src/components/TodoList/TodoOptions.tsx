@@ -9,27 +9,40 @@ interface OptionProps {
   todo: ITodoItem
 }
 
-const menu = (
-  <Menu onClick={console.log}>
-    <Menu.Item key="1">
-      编辑
-    </Menu.Item>
-    <Menu.Item key="2">
-      提升优先级
-    </Menu.Item>
-    <Menu.Item key="3">
-      降低优先级
-    </Menu.Item>
-  </Menu>
-);
-
 
 class TodoOptions extends Component<OptionProps, any> {
+  renderMenu = (todo: ITodoItem) => {
+    return (
+      <Menu>
+        <Menu.Item key="edit" onClick={() => {
+          console.log("click")
+        }}>
+          编辑
+        </Menu.Item>
+        <Menu.Item key="raisePriority" onClick={() => {
+          TodoStore.raisePriority(todo);
+        }}>
+          提升优先级
+        </Menu.Item>
+        <Menu.Item key="reducePriority" onClick={() => {
+          TodoStore.reducePriority(todo);
+        }}>
+          降低优先级
+        </Menu.Item>
+        <Menu.Item key="delete" onClick={() => {
+          TodoStore.deleteTodoItem(todo);
+        }}>
+          删除
+        </Menu.Item>
+      </Menu>
+    );
+  };
+
   render() {
     if (this.props.todo.status === TodoStatus.UNDONE) return (
       <Dropdown.Button
         type="primary"
-        overlay={menu}
+        overlay={this.renderMenu(this.props.todo)}
         onClick={() => {
           TodoStore.markAsDone(this.props.todo);
         }}

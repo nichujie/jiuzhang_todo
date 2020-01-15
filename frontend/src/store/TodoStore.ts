@@ -2,7 +2,7 @@ import {action, computed, observable} from 'mobx';
 import provider from '../utils/provider';
 
 import {ITodoItem} from '../constant/Interface';
-import {TodoStatus} from '../constant/params';
+import {TodoPriority, TodoStatus} from '../constant/params';
 
 const checkExpired = (todo: ITodoItem): boolean => {
   const now = new Date();
@@ -49,17 +49,17 @@ class TodoStore {
   };
 
   @action sortByPriority = () => {
-    this.todoList.sort((a, b): number => {
+    this.todoList = this.todoList.slice().sort((a, b): number => {
       return a.priority - b.priority;
     })
   };
 
   @action sortByExpireDate = () => {
-    this.todoList.sort((a, b): number => {
+    this.todoList = this.todoList.slice().sort((a, b): number => {
       const date1 = Date.parse(a.expire_date);
       const date2 = Date.parse(b.expire_date);
       return date1 - date2;
-    })
+    });
   };
 
   @action createTodoItem = (todo: ITodoItem) => {
@@ -102,6 +102,22 @@ class TodoStore {
   @action reducePriority = (todo: ITodoItem) => {
     return provider.getInstance().patch(`/todos/${todo.id}/`,
       {priority: todo.priority + 1})
+      .then((response) => {
+        this.fetchTodoList();
+      })
+  };
+
+  @action quickCreateTodo = (title: string) => {
+    const now = new Date();
+    const nextDay = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+    let todo: ITodoItem = {
+      title: title,
+      content: '',
+      status: TodoStatus.UNDONE,
+      priority: TodoPriority.CASUAL,
+      expire_date: nextDay.toISOString()
+    };
+    return provider.getInstance().post('/todos/', todo)
       .then((response) => {
         this.fetchTodoList();
       })
