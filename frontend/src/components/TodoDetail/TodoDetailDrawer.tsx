@@ -1,8 +1,8 @@
 import React, {Component} from "react";
+import {observer} from "mobx-react";
 import {Drawer} from 'antd';
 
 import TodoStore from '../../store/TodoStore';
-import {observer} from "mobx-react";
 import TodoDetailForm from "./TodoDetailForm";
 
 

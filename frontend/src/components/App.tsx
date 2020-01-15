@@ -3,16 +3,12 @@ import {Layout, Radio, Row} from 'antd';
 import {RadioChangeEvent} from "antd/es/radio";
 import {observer} from "mobx-react";
 
-import moment from 'moment';
-import 'moment/locale/zh-cn';
-
 import TodoStore from '../store/TodoStore';
 import TodoList from "./TodoList";
 import TodoCategory from "./TodoCategory";
 import TodoCreate from "./TodoList/TodoCreate";
-import './App.css';
 
-moment.locale('zh-cn');
+import './App.css';
 
 
 const {Header, Content, Sider} = Layout;

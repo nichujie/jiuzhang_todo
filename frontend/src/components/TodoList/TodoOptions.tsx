@@ -1,7 +1,7 @@
 import React, {Component} from "react";
+import {Button, Dropdown, Menu} from "antd";
 
 import {ITodoItem} from '../../constant/Interface';
-import {Button, Dropdown, Menu} from "antd";
 import {TodoStatus} from "../../constant/params";
 import TodoStore from "../../store/TodoStore";
 

@@ -5,6 +5,7 @@ import {List, Tag} from 'antd';
 import TodoStore from "../../store/TodoStore";
 import {ITodoItem} from "../../constant/Interface";
 import {PriorityText, PriorityColors} from "../../constant/params";
+
 import TodoOptions from "./TodoOptions";
 import TodoDetailDrawer from "../TodoDetail/TodoDetailDrawer";
 

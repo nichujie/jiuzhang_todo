@@ -1,9 +1,9 @@
+import moment from 'moment';
+import {observer} from "mobx-react";
 import React, {Component, FormEvent} from "react";
 import {Form, Button, Col, Row, Input, Select, DatePicker} from 'antd';
-import moment from 'moment';
 
 import TodoStore from '../../store/TodoStore';
-import {observer} from "mobx-react";
 import {TodoPriority} from "../../constant/params";
 
 import './TodoDetail.css';
@@ -15,6 +15,11 @@ const {TextArea} = Input;
 function hasErrors(fieldsError: any) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
+
+function disabledDate(current: any) {
+  return current && current < moment().endOf('day');
+}
+
 
 @observer
 class TodoDetailForm extends Component<any, any> {
@@ -49,9 +54,7 @@ class TodoDetailForm extends Component<any, any> {
 
 
   render() {
-    const {getFieldDecorator, getFieldsError, getFieldError, isFieldTouched} = this.props.form;
-
-    const titleError = isFieldTouched('title') && getFieldError('title');
+    const {getFieldDecorator, getFieldsError} = this.props.form;
 
     return (
       <div>
@@ -94,7 +97,11 @@ class TodoDetailForm extends Component<any, any> {
                 {getFieldDecorator('expire_date', {
                   rules: [{required: true, message: '请选择到期时间'}],
                 })(
-                  <DatePicker showTime placeholder="选择时间"/>
+                  <DatePicker
+                    showTime
+                    placeholder="选择时间"
+                    disabledDate={disabledDate}
+                  />
                 )}
               </Form.Item>
             </Col>
