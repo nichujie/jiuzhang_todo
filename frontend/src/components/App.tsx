@@ -25,7 +25,7 @@ class TodoApp extends Component<any, any> {
   }
 
   handleSortChange = (e: RadioChangeEvent) => {
-    this.setState({sortBy: e.target.value})
+    this.setState({sortBy: e.target.value});
     if (e.target.value === 'expire') TodoStore.sortByExpireDate();
     else TodoStore.sortByPriority();
   };
@@ -49,8 +49,8 @@ class TodoApp extends Component<any, any> {
               <Row>
                 <div className="sort-button-group">
                   <Radio.Group value={sortBy} onChange={this.handleSortChange}>
-                    <Radio.Button value="expire">Large</Radio.Button>
-                    <Radio.Button value="priority">Default</Radio.Button>
+                    <Radio.Button value="expire">按日期排序</Radio.Button>
+                    <Radio.Button value="priority">按优先级排序</Radio.Button>
                   </Radio.Group>
                 </div>
               </Row>

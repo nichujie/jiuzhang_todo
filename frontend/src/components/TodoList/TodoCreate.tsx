@@ -18,13 +18,17 @@ class TodoCreate extends Component<any, any> {
       if (!err) {
         TodoStore.quickCreateTodo(values.title)
           .then(() => {
-
+            this.handleReset();
           })
           .catch(() => {
 
           })
       }
     });
+  };
+
+  handleReset = () => {
+    this.props.form.resetFields();
   };
 
   render() {
