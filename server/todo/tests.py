@@ -10,7 +10,7 @@ from .constants import TodoStatus, TodoPriority
 # Create your tests here.
 class TodoTestCase(TestCase):
     def setUp(self):
-        self.client = APIClient()
+        self.client = APIClient(enforce_csrf_checks=True)
         # undone and expired
         self.undone_exp = Todo.objects.create(
             title='undone_exp',
@@ -91,6 +91,7 @@ class TodoTestCase(TestCase):
         self.assertEqual(self.undone_unexp.content, origin_content)
         self.assertEqual(self.undone_unexp.expire_date, origin_expired_date)
 
+        # test with valid data
         new_expire_date = timezone.now() + datetime.timedelta(days=1)
         data['expire_date'] = new_expire_date
         response = self.client.patch(url, data=data)
@@ -100,5 +101,67 @@ class TodoTestCase(TestCase):
         self.assertEqual(self.undone_unexp.content, data['content'])
         self.assertEqual(self.undone_unexp.expire_date, new_expire_date)
 
+        # test with invalid status
+        data['status'] = -1
+        response = self.client.patch(url, data=data)
+        self.assertEqual(response.status_code, 400)
+        data['status'] = TodoStatus.DONE + 1
+        response = self.client.patch(url, data=data)
+        self.assertEqual(response.status_code, 400)
+        data['status'] = 0.5
+        response = self.client.patch(url, data=data)
+        self.assertEqual(response.status_code, 400)
+
+        # test with invalid priority
+        data['priority'] = -1
+        response = self.client.patch(url, data=data)
+        self.assertEqual(response.status_code, 400)
+        data['priority'] = TodoPriority.CASUAL + 1
+        response = self.client.patch(url, data=data)
+        self.assertEqual(response.status_code, 400)
+        data['priority'] = 0.5
+        response = self.client.patch(url, data=data)
+        self.assertEqual(response.status_code, 400)
+
     def test_delete_todo(self):
-        pass
+        todo_pk = self.undone_unexp.pk
+        url = '/api/todos/{}/'.format(todo_pk)
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, 204)
+        todo_obj = Todo.objects.all().filter(pk=todo_pk).first()
+        self.assertIsNone(todo_obj)
+
+        # test delete non-exist pk
+        non_exist_pk = Todo.objects.all().order_by('-pk').first().pk + 1
+        url = '/api/todos/{}/'.format(non_exist_pk)
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, 404)
+
+    def test_create_todo(self):
+        url = '/api/todos/'
+        data = {
+            'title': 'test',
+            'expire_date': timezone.now() - datetime.timedelta(days=1)
+        }
+        # test with invalid expire_date
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, 400)
+
+        # test with valid data
+        data['expire_date'] = timezone.now() + datetime.timedelta(days=1)
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(Todo.objects.count(), 5)
+        self.assertEqual(response.data['title'], data['title'])
+        self.assertEqual(response.data['status'], TodoStatus.UNDONE)
+        self.assertEqual(response.data['priority'], TodoPriority.CASUAL)
+
+        # test with invalid status
+        data['status'] = TodoStatus.DONE + 1
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, 400)
+        data['status'] = TodoStatus.UNDONE
+
+        data['priority'] = TodoPriority.CASUAL + 1
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, 400)
