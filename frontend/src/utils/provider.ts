@@ -1,4 +1,5 @@
 import axios, {AxiosInstance} from 'axios';
+import cookie from 'react-cookies';
 import {API} from '../constant/api';
 
 class Provider {
@@ -7,8 +8,7 @@ class Provider {
       baseURL: API,
       withCredentials: true,
       headers: {
-        // TODO:
-        "X-CSRFToken": 'XXX',
+        "X-CSRFToken": cookie.load('csrftoken')
       },
     });
   }

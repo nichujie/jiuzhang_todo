@@ -3,7 +3,7 @@
 }
 
 .app-header {
-    background: #fff;
+    background: #fff !important;
     padding-left: 30px;
     font-size: 1.2rem;
 }
