@@ -36,7 +36,7 @@ Use typescript.
 
 查看不同状态的待办事项：未完成、已完成、过期。
 
-![](https://github.com/nichujie/jiuzhang_todo/blob/typescript/screenshot/list.png)
+![](https://github.com/nichujie/jiuzhang_todo/blob/typescript/screenshot/list.gif)
 
 ### *待办事项设置优先级
 
